@@ -1,0 +1,21 @@
+#!/bin/bash
+# Basic parameters: job name, parallel environment and cores, queue, used shell,
+# current working directory,output files (.err, .out), email.
+#$ -N Nucleation
+#$ -pe gpu 1
+#$ -q g16gpu.q@g16gpu02
+#$ -S /bin/bash
+##$ -cwd
+#$ -o output
+#$ -e ERROR
+. /etc/profile
+module load lammps/toni
+module load numpy/1.14.5_intel-2015
+export CUDA_VISIBLE_DEVICES=`cat $TMPDIR/.gpus`
+export PYTHONPATH=:"/home/g16adonato/ase":${PYTHONPATH}
+
+python3 $PWD/main.py
+
+
+
+
