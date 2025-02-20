@@ -1,1 +1,12 @@
-primer commit
+					20 de febrero del 2025
+El objetivo es acoplarlo con mace y por lo tanto con nuestro potencial de MACE.
+Análisis de archivos:
+ * L1001.xyz :: parece ser la configuración inicial
+ * ip_definition.dat :: parecen ser los parámetros de lammps por los pair_coeff
+ * conf.data :: es el config file
+ * inc_lib.xyz :: ¿Quizás sean las partículas con las que hace nucleación?
+ * lammps_io.py :: clase lammps MD, input generator, corre colisiones
+ * main.py :: Bueno, ¿que mas puede ser?
+ * Nucleator.sub :: es el escript para lanzar el cálculo
+ * particle.py :: clase particula heredada de ASE
+ * runconfig.py :: configuration of the run
