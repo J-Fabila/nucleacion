@@ -20,4 +20,8 @@ Notas de Álex:
 * main.py: Tha main program that calls all the functions. 
 * Nucleator.sub, Job sender, particle.py, runconfig.py and utilities.py: The utility functions of the code. 
 
-
+Puntos que se pueden mejorar:
+* el conf.data tiene un formato de texto poco robusto, se podría cambiar por un yaml
+* la función que lee parámetros se podría cambiar simplemente por un yaml.load, tambien toda la estructura de parametros se puede cambiar en función de eso
+* reorganizar el repo, es un poco caótico
+* añadir variable de selección de calculadora
