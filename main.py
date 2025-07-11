@@ -9,6 +9,8 @@ from runconfig import Run_Config
 import time as tm
 import numpy as np
 
+from mace.calculators import MACECalculator
+
 # Starting time
 start_time = tm.time()
 
@@ -47,11 +49,18 @@ temp = run_config.temp
 cols_per_second = 1
 non_attached_steps = 0
 
+# ******* * * * * * *  *  *   *   *    *   *   *   *   *  * * * * * * * * * * * * *******************
+"""
 calculator = Lammps_MD(temp=run_config.temp,
                        symb_conv=run_config.element_conv,
                        shells=run_config.shells,
                        charges=run_config.charge,
                        ip_file=run_config.ip_def)  # check
+"""
+calculator = MACECalculator(model_paths=['MACE_dip/mace03_run-123.model'], device='cpu', default_dtype="float32")
+#atoms.calc = calculator
+
+# ******* * * * * * *  *  *   *   *    *   *   *   *   *  * * * * * * * * * * * * *******************
 
 log_file = open('results.log', 'w')
 log_file.write('Step Seed.Chem.Formula Temp den(ncm-3) P(Pa) cols.per.second position added atom_mov\n')
