@@ -10,3 +10,14 @@ Análisis de archivos:
  * Nucleator.sub :: es el escript para lanzar el cálculo
  * particle.py :: clase particula heredada de ASE
  * runconfig.py :: configuration of the run
+					11 de julio del 2025
+Notas de Álex:
+* Conf.data: In cond.data we specify all the necessary input for the nucleation growth to start. Like the cycles, temperature, desired stiochiometry. How many elements and their charges and if there are shells included. 
+* Inc_lib.xyz: Here we specify the species that are going to be generated in every step. The process is number of atoms followed by charge and the probability and then xyz coordinates of the species. 
+* Ip_definition: This file is where the potential is specified.
+* L1001.xyz: This file is the seed particle. The first step. You specify the number of atoms, overall charge and the coordinates. 
+* lammps_io.py: This is the main wrapper of the lammps and that you should probably change it to work with ASE. it creates the input in everycycle and automates the process for the outputs. 
+* main.py: Tha main program that calls all the functions. 
+* Nucleator.sub, Job sender, particle.py, runconfig.py and utilities.py: The utility functions of the code. 
+
+
