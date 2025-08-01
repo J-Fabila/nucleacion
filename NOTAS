@@ -25,3 +25,37 @@ Puntos que se pueden mejorar:
 * la función que lee parámetros se podría cambiar simplemente por un yaml.load, tambien toda la estructura de parametros se puede cambiar en función de eso
 * reorganizar el repo, es un poco caótico
 * añadir variable de selección de calculadora
+
+					1 de agosto del 2025
+* lammps_io es una clase fabricada, no un paquete (importante)
+* lammps_MD es un wrapper, no una función nativa de lammps
+* lammps_io :: Lammps_MD :: run_collision
+* Lammps_MD :: init :: run_command puede variar de sistema a sistema
+  sería conveniente hacerlo general
+* Lammps_MD :: init
+               run_collision :: se llama así pero 
+               read_final_structure
+               clean_md
+               
+* Considero que hay 2 opciones: refactorizar el código y después
+  integrar MACE o directamente cargarnos la parte lammps y hacerlo
+  con MACE y ya si eso, después integrarlo todo
+* ip definition tiene los parametros del campo de fuerzas de lammps
+
+
+Lista de cambios: 
+* Input conf.data -> conf.yaml : robust and flexible standard format that allows comments and more
+  runconfig lee linea por linea en orden especifico
+* naggs.py ahora es el principal
+* Yo reorganizaría:
+  conf.yaml
+  naggs.py
+  src
+     calculators
+        LAMMPS
+           inputs
+           wrappers_lammps 
+        MACE
+     utils.py
+     particle.py   
+     otros.py
