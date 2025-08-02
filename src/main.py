@@ -50,14 +50,14 @@ cols_per_second = 1
 non_attached_steps = 0
 
 # ******* * * * * * *  *  *   *   *    *   *   *   *   *  * * * * * * * * * * * * *******************
-"""
+
 calculator = Lammps_MD(temp=run_config.temp,
                        symb_conv=run_config.element_conv,
                        shells=run_config.shells,
                        charges=run_config.charge,
                        ip_file=run_config.ip_def)  # check
-"""
-calculator = MACECalculator(model_paths=['MACE_dip/mace03_run-123.model'], device='cpu', default_dtype="float32")
+
+#calculator = MACECalculator(model_paths=['MACE_dip/mace03_run-123.model'], device='cpu', default_dtype="float32")
 #atoms.calc = calculator
 
 # ******* * * * * * *  *  *   *   *    *   *   *   *   *  * * * * * * * * * * * * *******************

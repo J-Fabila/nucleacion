@@ -1,0 +1,26 @@
+input_file : L1001.xyz
+
+initial_condensation_distance : 875000000000.0 # in SI 3.5 R* of IK Tau
+
+condensation_species : inc_lib.xyz
+
+mace_force_field_file: /home/yuca/workdir/naggs/src/calculators/MACE/models/mace03_run-123.model
+
+temperature : 1000
+
+desired_stoichiometry : Mg2SiO4
+
+density : 3.6e14 #in molecules per cm**3 cond distance
+
+cycles : 10
+
+elements : {
+    "O": {1: 1.919810, 4: -3.281110},
+    "Si": {2: 2.722600},
+    "Mg": {3: 1.361300}
+}
+
+shells : [1,0]
+
+
+Ip definition : ip_definition.dat
