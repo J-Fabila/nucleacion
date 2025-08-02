@@ -1,9 +1,0 @@
-# ------------- FORCE FIELD DEFINITION
-pair_style buck/coul/long/cs 15.0 100
-pair_coeff * *  0.0 1.0 0.0
-pair_coeff 4 4  15039.909 0.227708 0.0
-pair_coeff 2 4  8166.2632 0.193884 0.0
-pair_coeff 3 4  2014.61 0.247732 10.1938
-
-bond_style harmonic
-bond_coeff 1 256.71027 0.0 # units eV/A^2
