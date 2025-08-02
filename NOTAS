@@ -47,6 +47,21 @@ Lista de cambios:
 * Input conf.data -> conf.yaml : robust and flexible standard format that allows comments and more
   runconfig lee linea por linea en orden especifico
 * naggs.py ahora es el principal
+* En principio es posible usar LAMMPS directamente sin escribir en disco los archivos de entrada/salida
+* Archivos que se quedan:
+  particle.py
+  incoming_part_library.py # esta dentro de particle, pero tendria que estar en su archivo aparte
+  utilities.py: se cambia a utils, hay que tener cuidado porque parece que está alambrado a SiO
+                solo contiene get_model_system(particle,incoming_particle)
+  o sea que bien podríamos meter todo ésto en utils.py
+* Podríamos añadir un logger guapo, aunque por pura estética, no sé hasta que punto haga falta
+* lammps_io se tendria que reescribir pero yo ahora mismo la dejaría como está y nos podemos
+  concentrar en MACE, ya si eso, después añadimos lammps también
+* Añadiría más parámetros en conf.yaml para poner los de lammps aunque no los usemos ahora
+  y los nuevos de MACE
+* Me falta por entender que es el inc_lib
+* Usar MACE únicamente como calculadora, tendríamos que cambiar la estructura del run_collision
+
 * Yo reorganizaría:
   conf.yaml
   naggs.py
