@@ -2,10 +2,13 @@ import sys
 import yaml
 import time as tm
 
-from src.particle import Particle, Incoming_Part_Library
+from ase.io import read, write
+
 from src.utils import get_model_system
-from mace.calculators import MACECalculator
-from ase.io import read
+#from mace.calculators import MACECalculator
+from src.calculators.LAMMPS.lammps_io import Lammps_MD
+from src.calculators.MACE.MACE_MD import MACE_collision
+from src.particle import Particle, Incoming_Part_Library
 
 start_time = tm.time()
 kb = 1.3806e-23
@@ -32,12 +35,15 @@ temp = config["temperature"]
 cols_per_second = 1
 non_attached_steps = 0
 
-calculator = MACECalculator(model_paths=[config["mace_force_field_file"]], device='cpu', default_dtype="float32")
-#atoms.calc = calculator
+if config["calculator"].upper() == "LAMMPS":
+    calculator = Lammps_MD(temp=run_config.temp,
+                       symb_conv=run_config.element_conv,
+                       shells=run_config.shells,
+                       charges=run_config.charge,
+                       ip_file=run_config.ip_def)  # check
 
 log_file = open('results.log', 'w')
 log_file.write('Step Seed.Chem.Formula Temp den(ncm-3) P(Pa) cols.per.second position added atom_mov\n')
-
 
 for i in range(1, config["cycles"]+1):
     # Returns max distance, although it has all of them
@@ -67,9 +73,27 @@ for i in range(1, config["cycles"]+1):
     print_string += ' {} {}'.format(cols_per_second, config["initial_condensation_distance"])
 
 
+# ******** * * * * * * * *  *  *   *    *     *    *       *   *  *  *  *  * * * * * * * * * *******
     # Check where will be the lunch command stored. Result struct should be a MainParticle, type, which must have a check_result
-    calculator.run_collision(model_system, num_atoms_seed, particle_size)
-    result_struct = calculator.read_final_structure()
+#    write(sys.stdout, model_system, format='xyz')
+
+    # Obtener datos
+    symbols = model_system.get_chemical_symbols()
+    positions = model_system.get_positions()
+    vels = model_system.get_velocities()
+
+    # Imprimir en formato extendido
+    print(len(model_system))
+    print("XYZ with velocities: symbol x y z vx vy vz")
+    for s, pos, vel in zip(symbols, positions, vels):
+        print(f"{s} {pos[0]:.6f} {pos[1]:.6f} {pos[2]:.6f} {vel[0]:.6f} {vel[1]:.6f} {vel[2]:.6f}")
+
+    if config["calculator"].upper() == "MACE":
+        result_struct = MACE_collision(model_system,config)  # atom_movement <- posible opción
+    elif config["calculator"].upper() == "LAMMPS":
+        calculator.run_collision(model_system, num_atoms_seed, particle_size)
+        result_struct = calculator.read_final_structure()
+# ******** * * * * * * * *  *  *   *    *     *    *       *   *  *  *  *  * * * * * * * * * *******
 
     added = result_struct.check_connectivity()
     if added is True:
@@ -89,4 +113,3 @@ for i in range(1, config["cycles"]+1):
     print(particle.get_chemical_formula())
 # Finishing lines of code
 print(str(tm.time()-start_time)+" seconds ")
-
