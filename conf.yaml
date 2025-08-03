@@ -22,5 +22,6 @@ elements : {
 
 shells : [1,0]
 
-
+calculator : MACE
+thermostat : Langevin # Verlet, NVTBerendsen
 Ip definition : ip_definition.dat
