@@ -89,7 +89,7 @@ for i in range(1, config["cycles"]+1):
         print(f"{s} {pos[0]:.6f} {pos[1]:.6f} {pos[2]:.6f} {vel[0]:.6f} {vel[1]:.6f} {vel[2]:.6f}")
 
     if config["calculator"].upper() == "MACE":
-        result_struct = MACE_collision(model_system,config)  # atom_movement <- posible opción
+        result_struct = MACE_collision(model_system,config,i)  # atom_movement <- posible opción
     elif config["calculator"].upper() == "LAMMPS":
         calculator.run_collision(model_system, num_atoms_seed, particle_size)
         result_struct = calculator.read_final_structure()
@@ -109,7 +109,9 @@ for i in range(1, config["cycles"]+1):
 
     print_string += str(atom_movement)+'\n'
     log_file.write(print_string)
-    calculator.clean_md(i, added)
+    if config["calculator"].upper() == "LAMMPS":
+        calculator.clean_md(i, added)
     print(particle.get_chemical_formula())
 # Finishing lines of code
 print(str(tm.time()-start_time)+" seconds ")
+
