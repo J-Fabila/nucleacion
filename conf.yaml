@@ -1,4 +1,4 @@
-input_file : L1001.xyz
+input_file : Ti14C13.xyz
 
 initial_condensation_distance : 875000000000.0 # in SI 3.5 R* of IK Tau
 
@@ -8,7 +8,7 @@ mace_force_field_file: /home/yuca/workdir/naggs/src/calculators/MACE/models/mace
 
 temperature : 1000
 
-desired_stoichiometry : Mg2SiO4
+desired_stoichiometry : Ti18C18 #Mg2SiO4
 
 density : 3.6e14 #in molecules per cm**3 cond distance
 
@@ -24,4 +24,5 @@ shells : [1,0]
 
 calculator : MACE
 thermostat : Langevin # Verlet, NVTBerendsen
+collisions_files : colisiones
 Ip definition : ip_definition.dat
