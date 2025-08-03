@@ -57,6 +57,7 @@ Lista de cambios:
 * Podríamos añadir un logger guapo, aunque por pura estética, no sé hasta que punto haga falta
 * lammps_io se tendria que reescribir pero yo ahora mismo la dejaría como está y nos podemos
   concentrar en MACE, ya si eso, después añadimos lammps también
+* lammps_io esta hardcodeada a un comando de run_command específico de la máquina
 * Añadiría más parámetros en conf.yaml para poner los de lammps aunque no los usemos ahora
   y los nuevos de MACE
 * Me falta por entender que es el inc_lib
@@ -74,3 +75,9 @@ Lista de cambios:
      utils.py
      particle.py   
      otros.py
+					3 de agosto del 2025
+* model system es una instancia de la clase atoms, desde ahi ya se
+  puede hacer el wrapper para MACE.
+* naggs originalmente utiliza NVE
+* naggs originalmente utiliza un número fijo de pasos de relajación
+* Empiezan las pruebas de verdad, usa TiC en los inputs.
