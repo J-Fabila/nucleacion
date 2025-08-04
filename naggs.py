@@ -3,6 +3,7 @@ import yaml
 import time as tm
 
 from ase.io import read, write
+from ase.md.velocitydistribution import MaxwellBoltzmannDistribution
 
 from src.utils import get_model_system
 #from mace.calculators import MACECalculator
@@ -27,6 +28,8 @@ prev_charge = seed.info['charge']
 particle = Particle(symbols=seed.get_chemical_symbols(),
                     positions=seed.get_positions())
 
+MaxwellBoltzmannDistribution(particle, temperature_K=config["temperature"])
+
 if "desired_stoichiometry" in config.keys():
     inc_part_libr = Incoming_Part_Library(config["condensation_species"], config["desired_stoichiometry"])
 
@@ -36,11 +39,11 @@ cols_per_second = 1
 non_attached_steps = 0
 
 if config["calculator"].upper() == "LAMMPS":
-    calculator = Lammps_MD(temp=run_config.temp,
-                       symb_conv=run_config.element_conv,
-                       shells=run_config.shells,
-                       charges=run_config.charge,
-                       ip_file=run_config.ip_def)  # check
+    calculator = Lammps_MD(temp,
+                       symb_conv=config["elements"],
+                       shells=config["shells"],
+                       charges=config["charges"],
+                       ip_file=config["ip_definition"])  # check
 
 log_file = open('results.log', 'w')
 log_file.write('Step Seed.Chem.Formula Temp den(ncm-3) P(Pa) cols.per.second position added atom_mov\n')
@@ -50,7 +53,10 @@ for i in range(1, config["cycles"]+1):
     particle_size = particle.get_maximum_distances()
     num_atoms_seed = len(particle)
     # incoming particle to be closer to the surface
-    incoming_particle = inc_part_libr.generate_inc(temp,
+    temp_ = 10
+    if config["calculator"].upper() == "LAMMPS":
+        temp_ = temp
+    incoming_particle = inc_part_libr.generate_inc(temp_,
                                                    particle_size,
                                                    prev_charge,
                                                    current_stoichiometry=particle.get_chemical_formula())
@@ -114,4 +120,3 @@ for i in range(1, config["cycles"]+1):
     print(particle.get_chemical_formula())
 # Finishing lines of code
 print(str(tm.time()-start_time)+" seconds ")
-
