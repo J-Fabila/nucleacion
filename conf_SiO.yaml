@@ -1,18 +1,18 @@
-input_file : Ti14C13.xyz
+input_file : L1001.xyz #Ti14C13.xyz
 
 initial_condensation_distance : 875000000000.0 # in SI 3.5 R* of IK Tau
 
-condensation_species : inc_lib_TiC.xyz
+condensation_species : inc_lib.xyz
 
 mace_force_field_file: /home/yuca/workdir/naggs/src/calculators/MACE/models/mace03_run-123.model
 
-temperature : 1000
+temperature : 100
 
-desired_stoichiometry : Ti18C18
+desired_stoichiometry : Mg2SiO4 #Ti18C18
 
 density : 3.6e14 #in molecules per cm**3 cond distance
 
-cycles : 20
+cycles : 10
 
 charges : {
     1: 1.919810, 4: -3.281110, 2: 2.722600, 3: 1.361300}
@@ -24,7 +24,7 @@ elements : {
 
 shells : ["O"]
 
-calculator : MACE
-thermostat : Langevin # Verlet #, NVTBerendsen
+calculator : LAMMPS # MACE
+thermostat : Langevin # Verlet, NVTBerendsen
 collisions_files : colisiones
 ip_definition : ip_definition.dat
