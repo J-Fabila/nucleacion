@@ -81,3 +81,27 @@ Lista de cambios:
 * naggs originalmente utiliza NVE
 * naggs originalmente utiliza un número fijo de pasos de relajación
 * Empiezan las pruebas de verdad, usa TiC en los inputs.
+* Puede que check connectivity no funcione si no tenemos la partícula
+  inicializada desde los parámetros de LAMMPS, habrá que verificar
+* Podríamos buscar hacer las funciones esas que sugieren los comentarios
+  para mejorar la legibilidad porque es verdad que es un desmadre
+* Podrías ir pensando en cambiar el logger
+* Cuantos menos archivos de entrada se necesiten es mejor, podriamos eliminar
+  el inc library y simplemente añadir esas variables en el conf.yaml
+* La parte de added is true es para acumular la particula obtenida al ciclo,
+  sino es que la descarta
+* Podríamos preguntarle a Andreu sobre el inc_lib para saber si vale la pena
+  cambiar el formato al conf.yaml
+* Tambien podríamos preguntarle sobre las otras variables del conf.dat, como
+  presion o densidad y tambien lo de los shells
+					4 de agosto del 2025
+* Parece que el número de átomos de la configuración puede ser diferente del
+  número deseado de estequiometria: el check connectivity tendría además que
+  verificar que no se hayan perdido átomos
+* el runconfig devuelve elements :: element_conv :: {'O': [1, 4], 'Si': [2], 'Mg': [3]}
+  importante saberlo para la integracion
+* el charges es: {1: 1.91981, 4: -3.28111, 2: 2.7226, 3: 1.3613}
+* SHELLS ['O']
+
+* Ahora todos los inputs son correctos y funcionan para ambos, tendríamos
+  que compatibilizar el charges con elements y elements_conv
