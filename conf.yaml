@@ -1,30 +1,42 @@
 input_file : Ti14C13.xyz
 
+# esta ya no se usa
 initial_condensation_distance : 875000000000.0 # in SI 3.5 R* of IK Tau
-
+# esto tampoco
 condensation_species : inc_lib_TiC.xyz
 
-mace_force_field_file: /home/yuca/workdir/naggs/src/calculators/MACE/models/mace03_run-123.model
+mace_force_field_file: /home/yuca/workdir/naggs/models/mace03_run-123.model
 
 temperature : 1000
 
-desired_stoichiometry : Ti18C18
+desired_stoichiometry : { #Ti14C16
+    "C": 18,
+    "Ti": 18}
 
+# esto ya no se usa
 density : 3.6e14 #in molecules per cm**3 cond distance
 
-cycles : 20
+cycles : 30
 
+# esto podria ya no usarse tampoco
 charges : {
-    1: 1.919810, 4: -3.281110, 2: 2.722600, 3: 1.361300}
+    1: 0.0, 4: 0.0, 2: 0.0, 3: 0.0}
 
-elements : {
-    "O": [1, 4],
-    "Si": [2],
-    "Mg": [3]}
+# esto tambien se puede deajr
+elements : ["C","Ti"]
 
+# no le veo utilidad
 shells : ["O"]
 
 calculator : MACE
 thermostat : Langevin # Verlet #, NVTBerendsen
 collisions_files : colisiones
+# tendria utilidad para la version lammps, pero convendria mas ponerlo a mano o algo asi
 ip_definition : ip_definition.dat
+
+relaxation_steps : 50
+collision_steps : 500
+
+# fs
+time_step_relaxation : 2.0
+time_step_collision : 2.0
