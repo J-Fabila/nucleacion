@@ -105,3 +105,11 @@ Lista de cambios:
 
 * Ahora todos los inputs son correctos y funcionan para ambos, tendríamos
   que compatibilizar el charges con elements y elements_conv
+					5 de agosto del 2025
+* check connectivity no parece funcionar bien, más fácil: matriz de distancias,
+  si al menos uno está conectado para cada uno bien.
+* Podemos añadir el connectivity check cada 100 pasos por ejemplo o algo que vea
+  que las distancias maximas no sean kilometricas, si es asi que descarte la
+  geometría en el MACE directamente
+* Ya intentamos adaptar el código este al MACE, pero me sale más barato hacernos
+  uno nuevo desde 0.
