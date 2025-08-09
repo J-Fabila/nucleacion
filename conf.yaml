@@ -1,42 +1,26 @@
-input_file : Ti14C13.xyz
-
-# esta ya no se usa
-initial_condensation_distance : 875000000000.0 # in SI 3.5 R* of IK Tau
-# esto tampoco
-condensation_species : inc_lib_TiC.xyz
-
-mace_force_field_file: /home/yuca/workdir/naggs/models/mace03_run-123.model
-
+# General input and output
+input_file : TiC.xyz
+collisions_files : colisiones # output files
+desired_stoichiometry : { #Ti14C16
+    "C": 13,
+    "Ti": 14}
+cycles : 3
+dist_from_seed : 5
+elements : ["C","Ti"]
+calculator : MACE
+offset : Angular #None, Radial, Angular
+# MD: Relaxation and collision
+thermostat : Langevin # Verlet #, NVTBerendsen
 temperature : 1000
 
-desired_stoichiometry : { #Ti14C16
-    "C": 18,
-    "Ti": 18}
+relaxation_steps : 500
+collision_steps : 1000
 
-# esto ya no se usa
-density : 3.6e14 #in molecules per cm**3 cond distance
+time_step_relaxation : 2.0 # fs
+time_step_collision : 2.0 # fs
 
-cycles : 30
+# MACE variables
+mace_force_field_file: ./models/mace03_run-123.model
 
-# esto podria ya no usarse tampoco
-charges : {
-    1: 0.0, 4: 0.0, 2: 0.0, 3: 0.0}
-
-# esto tambien se puede deajr
-elements : ["C","Ti"]
-
-# no le veo utilidad
-shells : ["O"]
-
-calculator : MACE
-thermostat : Langevin # Verlet #, NVTBerendsen
-collisions_files : colisiones
-# tendria utilidad para la version lammps, pero convendria mas ponerlo a mano o algo asi
+# LAMMPS variables
 ip_definition : ip_definition.dat
-
-relaxation_steps : 50
-collision_steps : 500
-
-# fs
-time_step_relaxation : 2.0
-time_step_collision : 2.0
