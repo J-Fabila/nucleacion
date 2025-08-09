@@ -113,3 +113,13 @@ Lista de cambios:
   geometría en el MACE directamente
 * Ya intentamos adaptar el código este al MACE, pero me sale más barato hacernos
   uno nuevo desde 0.
+					6 de agosto del 2025
+* Parece que algunos átomos los genera muy lejos o sin mucha potencia
+  tendríamos que aislar la función de generador de fragmentos y analizarla mejor
+* También deberías añadir la funcionalidad de que puedas generar
+  fragmentos de verdad, no solo átomos sueltos
+* src/GenerateFragment, habría que quitar el inicial, deseado, disponible
+  cuando terminemos las pruebas
+* Añadir la variable fragment_file, if None, genera átomos sueltos
+* Generar velocidades con Maxwell y generar rotacion random
+* El GenerateFragment debe ser consciente de una u otra situación
