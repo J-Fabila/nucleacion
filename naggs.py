@@ -22,15 +22,16 @@ with open(conf_file, "r") as f:
     config = yaml.safe_load(f)
 
 time = 0.0
+
 seed = read(config["input_file"])
-seed.translate(-seed.get_center_of_mass())
 MaxwellBoltzmannDistribution(seed, temperature_K=config["temperature"])
 
 for i in range(1, config["cycles"]+1):
-    initial_stoichiometry = parse_formula(str(seed.symbols))
+    current_stoichiometry = parse_formula(str(seed.symbols))
+    seed.translate(-seed.get_center_of_mass())
     RelaxGeometry(seed,config,i)
     rho = GetParticleDiameter(seed)
-    fragment = GenerateFragment(initial_stoichiometry,config["desired_stoichiometry"],config["elements"],config["temperature"], rho)
+    fragment = GenerateFragment(current_stoichiometry,config, rho)
     if fragment is None: # No more atoms to add
         break
     else:
