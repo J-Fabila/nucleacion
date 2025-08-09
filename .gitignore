@@ -4,3 +4,4 @@ src/__pycache__/*
 src/calculators/LAMMPS/__pycache__/*
 src/calculators/MACE/__pycache__/*
 colisiones_*xyz
+colisiones/*xyz
