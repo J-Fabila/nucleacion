@@ -123,3 +123,73 @@ Lista de cambios:
 * Añadir la variable fragment_file, if None, genera átomos sueltos
 * Generar velocidades con Maxwell y generar rotacion random
 * El GenerateFragment debe ser consciente de una u otra situación
+
+					9 de agosto del 2025
+* Se podrían definir diferentes termostatos para colisión y relajación
+* De hecho, creo que en el original lo hacen así, verifica
+* Habría que trabajar en los loggs
+* Mira la posibilidad de añadir un working dir que guarde las xyz alli
+* Los átomos se frenan casi de inmediato debido al termostato, cuando
+  uses Verlet el factor x10 en la temperatura va a hacerse presente
+* Definición del primer lote de experimentos:
+   * Exp 1: TiC -> Ti13C14 : Verlet : Radial : dist_from_seed 5
+   * Exp 2: TiC -> Ti13C14 : Verlet : Angular : dist_from_seed 5
+   * Exp 3: TiC -> Ti13C14 : Langevin : Radial : dist_from_seed 5
+   * Exp 4: TiC -> Ti13C14 : Langevin : Angular : dist_from_seed 5
+* Segundo lote de experimentos:
+   * Exp 5 TiC -> Ti13C14 : Verlet : None : dist_from_seed 1
+   * Exp 6 TiC -> Ti13C14 : Verlet : Radial : dist_from_seed 1
+   * Exp 7 TiC -> Ti13C14 : Langevine : None : dist_from_seed 1
+   * Exp 8 TiC -> Ti13C14 : Langevine : Radial : dist_from_seed 1
+
+   * Exp 5: Ti13C14 -> Ti63C62 : Por def : Radial
+   * Exp 6: Ti13C14 -> Ti63C62 : Por def : Angular
+
+* Resultados de los experimentos:
+   * Exp 1: No progresa, se queda en 4 o 5 átomos, algunos átomos
+            libres volando por ahi, se ve que ha  fallado la cosa
+            que  verifica que estén  todos los átomos  conectados
+   * Exp 2: Idem
+   * Exp 3: Idem
+   * Exp 4: Esencialmente lo mismo
+
+   * Exp 5: Idem
+   * Exp 6: Idem
+   * Exp 7: Parece funcionar mejor
+
+					13 de agosto del 2025
+* Error cuando termina de ejecutarse:
+Traceback (most recent call last):
+  File "/home/yuca/workdir/naggs/naggs.py", line 35, in <module>
+    fragment = GenerateFragment(current_stoichiometry,config, rho)
+  File "/home/yuca/workdir/naggs/src/GenerateFragment.py", line 71, in GenerateFragment
+    return particula
+UnboundLocalError: local variable 'particula' referenced before assignment
+
+					14 de agosto del 2025
+
+* Cambié la distancia de la partícula de rho + dist a rho/2+dist. Sino queda muy lejos
+* Parece ser que la verificación de estructuras no funciona del todo bien, habría que
+  aislarla y probarla por separado
+
+					19 de agosto del 2025
+* La verificación de estructuras funciona bien, era la relajación
+  lo que fallaba.
+* Sigo pensando que como está planteado la relajación es redundante
+* Se podría cambiar la MD por relajación de verdad como opción
+* Dejo listo el experimento 11, identico al 10 pero partiendo de un
+  checkpoint.xyz que tiene ya buen tamaño
+* Habrá falta afinar la parte de las colisiones, quizas dejar por
+  pocos fs la trayectoria original en linea recta (NVE) y luego
+  cambiar a NVT
+* Por el momento, lo de las configuraciones que se rompen y se pierde
+  el proceso parece ya estar resuelto, era el problema de las
+  relajaciones
+* el codigo se vuelve muy lento cuando la NP explota, podríamos
+  añadir el checkcontinuity cada tanto o un break si las distancias
+  van demasiado lejos
+* Parece que si la relajacion falla, continua al siguiente estep
+  y por eso no imprime la señal de i,estequiometria,etc,aceptado
+* Podemos probar a darle pocos  fs de NVE en colision  y relajar
+  el resto del tiempo
+* En el runcolission lo mismo que pusiste en el relaxation
