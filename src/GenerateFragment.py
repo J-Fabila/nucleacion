@@ -52,10 +52,10 @@ def GenerateFragment(inicial, config, rho):
         else:
             dist_min = config["dist_from_seed"]
 
-        posicion = -(rho+dist_min) * direccion
+        posicion = -(rho/2+dist_min) * direccion
 #        print("POS", posicion)
         particula = Atoms(nuevo, positions=[posicion], masses=[masses[nuevo]])
-        MaxwellBoltzmannDistribution(particula, temperature_K=tempe*10)
+        MaxwellBoltzmannDistribution(particula, temperature_K=tempe)
         velocidad_magnitud = np.linalg.norm(particula.get_velocities())
 #        print("VEL", velocidad_magnitud)
         velocidad_vector = direccion * velocidad_magnitud
