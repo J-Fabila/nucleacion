@@ -193,3 +193,47 @@ UnboundLocalError: local variable 'particula' referenced before assignment
 * Podemos probar a darle pocos  fs de NVE en colision  y relajar
   el resto del tiempo
 * En el runcolission lo mismo que pusiste en el relaxation
+
+					20 de agosto del 2025
+* exp 13 es identico al 12, desde TiC hasta Ti50C50 pero analizando
+  distancia = 5 y off radial
+* exp 14 es identico al 13, desde TiC hasta Ti50C50 pero analizando
+  distancia = 5 y off angular
+
+* Cosas que aún faltan:
+  * implementación LAMMPS
+  * verificar que funciona con la versión más moderna de MACE
+  * quizás los LOGS
+
+* Experimentos de verdad
+  * conf_1.yaml :: TiC -> Ti14C13
+  * conf_2.yaml :: TiC -> Ti18C14
+  * conf_3.yaml :: TiC -> Ti18C18
+  * conf_4.yaml :: TiC -> Ti24C20
+  * conf_5.yaml :: TiC -> Ti24C24
+  * conf_6.yaml :: TiC -> Ti32C28
+  * conf_7.yaml :: TiC -> Ti32C32
+  * conf_8.yaml :: TiC -> Ti40C36
+  * conf_9.yaml :: TiC -> Ti40C40
+  * conf_10.yaml :: TiC -> Ti50C46
+  * conf_11.yaml :: TiC -> Ti50C50
+  * conf_12.yaml :: TiC -> Ti63C58
+  * conf_13.yaml :: TiC -> Ti63C62
+
+  * conf_14.yaml :: Ti13C14 -> Ti18C14
+  * conf_15.yaml :: Ti13C14 -> Ti18C18
+  * conf_16.yaml :: Ti13C14 -> Ti24C20
+  * conf_17.yaml :: Ti13C14 -> Ti24C24
+  * conf_18.yaml :: Ti13C14 -> Ti32C28
+  * conf_19.yaml :: Ti13C14 -> Ti32C32
+  * conf_20.yaml :: Ti13C14 -> Ti40C36
+  * conf_21.yaml :: Ti13C14 -> Ti40C40
+  * conf_22.yaml :: Ti13C14 -> Ti50C46
+  * conf_23.yaml :: Ti13C14 -> Ti50C50
+  * conf_24.yaml :: Ti13C14 -> Ti63C58
+  * conf_25.yaml :: Ti13C14 -> Ti63C62
+
+					21 de agosto del 2025
+* Experimento 14 va mucho mejor que el 13, pero aún así no va óptimo,
+  pero va bien: la diferencia es que lleva offset angular y 5 angs
+  desde la superficie. Experimento 13 lleva 5 A tambien pero radial
