@@ -237,3 +237,34 @@ UnboundLocalError: local variable 'particula' referenced before assignment
 * Experimento 14 va mucho mejor que el 13, pero aún así no va óptimo,
   pero va bien: la diferencia es que lleva offset angular y 5 angs
   desde la superficie. Experimento 13 lleva 5 A tambien pero radial
+
+					26 de agosto del 2025
+* Podrías poner en la diapo una figura de la NP original y otra de
+  la que se obtiene y ademas la animación de la nucleación
+
+					2 de septiembre del 2025
+* Las geometrías Ti*C*_1.xyz son las que se hicieron desde TiC
+* Las geometrías Ti*C*_2.xyz son las que se hicieron desde Ti14C13
+					3 de septiembre del 2025
+* Las dinámicas cuando revientan van lentísimas, podríamos añadir
+  el mecanismo de prevención de rupturas al código de DM
+
+					4 de septiembre del 2025
+* How is it defined the distance of the offset (max distance? min? average?)
+* Nucleación at 1500 K
+
+					18 de septiembre del 2025
+* Geometrías iniciales de 18_14, 24_20, 32_28 y 40_36 listas para DM
+* Esperando por las nucleaciones de 50_46 y 63_62, que en 
+  /home/yuca/workdir/mace/geometrias tienen aún las geometrías anteriores
+					25 de septiembre del 2025
+* Optimize with DFT geometries without C-C bonds
+* DM for IR wrt temperature
+
+					2 de octubre del 2025
+* Look for the energy gap between the perfect cubic and the other structure
+* To do this is always interesting
+* Check the movies of MD
+* Experimento de agregación, dos cubitos perfectos
+  2 * Ti18C18 -> Ti36C36 en fase, offset, varias posibilidades de colision
+  habrá carbones en las esquinas, quitaselos para obtener Ti36C32
