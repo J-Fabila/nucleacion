@@ -70,15 +70,15 @@ velocidades_2 = velocidades_2 - config["velocity_magnitude_2"] * direccion
 seed_1.set_velocities(velocidades_1)
 
 if config["offset"] == "None":
-    seed_2.set_velocities([velocidades_2])
+    seed_2.set_velocities(velocidades_2)
 elif config["offset"].lower() == "radial":
     posicions = seed_2.get_positions()
     posicions = offset_radial_fragment(posicions,config["max_radial_offset"])
-    seed_2.set_positions([posicions])
-    seed_2.set_velocities([velocidades_2])
+    seed_2.set_positions(posicions)
+    seed_2.set_velocities(velocidades_2)
 elif config["offset"].lower() == "angular":
     velocidades_2 = offset_angular_fragment(velocidades_2,config["max_radial_offset"], config["min_dist"])
-    seed_2.set_velocities([velocidades_2])
+    seed_2.set_velocities(velocidades_2)
 
 atoms = seed_1 + seed_2
 
@@ -128,4 +128,3 @@ if config["final_relaxation"]:
         dyn.step()
         dyn.atoms.write(output_file, append=True)
         i = i + 1
-    return atoms

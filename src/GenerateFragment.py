@@ -148,7 +148,7 @@ def offset_angular_fragment(velocidad_vector, rho, dist_min):
         perp_vec /= norm_perp
 
         vel = rho / (rho + dist_min) * norm_vel
-        offset = perp_vec * noffset_magnitude * vel
+        offset = perp_vec * offset_magnitude * vel
         
         velocidades[i] = vel_original + offset
 

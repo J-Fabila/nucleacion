@@ -8,8 +8,8 @@ offset : Angular #None, Radial, Angular
 max_radial_offset : 1.0
 initial_temperature_1 : 1000 # K
 initial_temperature_2 : 1000 # K
-velocity_magnitude_1 : 0.0 # km/s
-velocity_magnitude_2 : 0.0 # km/s
+velocity_magnitude_1 : 1.0 # km/s
+velocity_magnitude_2 : 1.0 # km/s
 collision_steps : 1000
 time_step_collision : 1.0 # fs
 
