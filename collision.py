@@ -57,6 +57,7 @@ rho_2 = seed_2.get_all_distances().max()
 posicion = -(rho_1/2 + rho_2/2 + config["min_dist"]) * direccion
 
 seed_1.translate(-seed_1.get_center_of_mass())
+seed_2.translate(-seed_2.get_center_of_mass())
 seed_2.translate(posicion)
 
 MaxwellBoltzmannDistribution(seed_1, temperature_K=config["initial_temperature_1"])
@@ -65,7 +66,7 @@ MaxwellBoltzmannDistribution(seed_2, temperature_K=config["initial_temperature_2
 velocidades_1 = seed_1.get_velocities()
 velocidades_1 = velocidades_1 + config["velocity_magnitude_1"] * direccion
 velocidades_2 = seed_2.get_velocities()
-velocidades_2 = velocidades_2 - config["velocity_magnitude_2"] * direccion
+velocidades_2 = velocidades_2 + config["velocity_magnitude_2"] * direccion
 
 seed_1.set_velocities(velocidades_1)
 
