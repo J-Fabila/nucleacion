@@ -1,0 +1,24 @@
+# General input and output
+input_file_1 : /home/yuca/workdir/TiC/geometrias/Ti14C13.xyz
+input_file_2 : /home/yuca/workdir/TiC/geometrias/Ti14C13.xyz
+output_file : colision.xyz
+
+min_dist : 2
+offset : Angular #None, Radial, Angular
+thermostat : Langevin # Verlet #, NVTBerendsen
+temperature : 1000
+
+relaxation_steps : 500
+collision_steps : 1000
+
+time_step_relaxation : 1.0 # fs
+time_step_collision : 1.0 # fs
+
+calculator : MACE
+
+# MACE variables
+mace_model_type : "EnergyDipoleMACE"
+mace_force_field_file : /home/yuca/workdir/mace/MACE_TiCH/tich_stagetwo.model
+
+# LAMMPS variables
+ip_definition : ip_definition.dat
