@@ -1,31 +1,24 @@
 import os
 import sys
 import yaml
+import torch
 import time as tm
 import numpy as np
+
 from ase import Atoms
-import torch
+from ase import units
+from ase.io import read, write
+from ase.md.langevin import Langevin
+from ase.md.verlet import VelocityVerlet
+from ase.md.nvtberendsen import NVTBerendsen
+from ase.md.velocitydistribution import MaxwellBoltzmannDistribution
 
 from mace.calculators import MACECalculator
-from ase.io import read, write
-from ase import units
-from ase.md.velocitydistribution import MaxwellBoltzmannDistribution
-from ase.md.verlet import VelocityVerlet
-#from ase.md.nosehoover import NoseHoover
-from ase.md.langevin import Langevin
-from ase.md.langevin_filter import LangevinFilter
-from ase.md.nvtberendsen_filter import NVTBerendsenFilter
-#from ase.md.berendsen_isokinetic import NVTBerendsenIsokinetic
-from ase.md.nvtberendsen import NVTBerendsen
-from ase.md.verlet import VelocityVerlet
 
-from src.RunCollision import RunCollision
-from src.RelaxGeometry import RelaxGeometry
-from src.GenerateFragment import GenerateFragment
-from src.GenerateFragment import offset_radial, offset_angular
-from src.utils import CheckConnectivity, GetParticleDiameter
-from src.utils import parse_formula
 from src.utils import masses
+from src.utils import parse_formula
+from src.utils import CheckConnectivity, GetParticleDiameter
+from src.GenerateFragment import offset_radial_fragment, offset_angular_fragment
 
 start_time = tm.time()
 kb = 1.3806e-23
@@ -66,24 +59,29 @@ posicion = -(rho_1/2 + rho_2/2 + config["min_dist"]) * direccion
 seed_1.translate(-seed_1.get_center_of_mass())
 seed_2.translate(posicion)
 
-MaxwellBoltzmannDistribution(seed_1, temperature_K=config["temperature"])
-MaxwellBoltzmannDistribution(seed_2, temperature_K=config["temperature"])
+MaxwellBoltzmannDistribution(seed_1, temperature_K=config["initial_temperature_1"])
+MaxwellBoltzmannDistribution(seed_2, temperature_K=config["initial_temperature_2"])
 
-particula = Atoms("C", positions=[posicion], masses=[masses["C"]])
-MaxwellBoltzmannDistribution(particula, temperature_K=config["temperature"])
+velocidades_1 = seed_1.get_velocities()
+velocidades_1 = velocidades_1 + config["velocity_magnitude_1"] * direccion
+velocidades_2 = seed_2.get_velocities()
+velocidades_2 = velocidades_2 - config["velocity_magnitude_2"] * direccion
 
-# Velocidad del offset
-velocidad_magnitud = np.linalg.norm(particula.get_velocities())
-velocidad_vector = direccion * velocidad_magnitud
-# Velocidades de la NP seed_2
-velocidades = seed_2.get_velocities()
-velocidades = velocidades + velocidad_vector
-velocidades = velocidades[ :, :]
-seed_2.set_velocities(velocidades)
+seed_1.set_velocities(velocidades_1)
+
+if config["offset"] == "None":
+    seed_2.set_velocities([velocidades_2])
+elif config["offset"].lower() == "radial":
+    posicions = seed_2.get_positions()
+    posicions = offset_radial_fragment(posicions,config["max_radial_offset"])
+    seed_2.set_positions([posicions])
+    seed_2.set_velocities([velocidades_2])
+elif config["offset"].lower() == "angular":
+    velocidades_2 = offset_angular_fragment(velocidades_2,config["max_radial_offset"], config["min_dist"])
+    seed_2.set_velocities([velocidades_2])
 
 atoms = seed_1 + seed_2
 
-# A partir de aqui pega la parte del dm hoover de yuca, la que funciona
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 mace_calc = MACECalculator(model_type=config["mace_model_type"],model_paths=[config["mace_force_field_file"]], device='cuda', default_dtype="float32")
 atoms.calc = mace_calc
@@ -96,7 +94,7 @@ for i in range(config["collision_steps"]):
     dyn.step()
     dyn.atoms.write("output_temp.xyz", append=True) # temporal
 
-    if i % 100 == 0 or i == timesteps - 1:
+    if i % 100 == 0 or i == config["collision_steps"] - 1:
         max_dist = dyn.atoms.get_all_distances().max()
         threeshold = 10 * (rho_1 + rho_2)
         if max_dist > threeshold:
@@ -113,3 +111,21 @@ for i in range(config["collision_steps"]):
         # borra el archivo temporal
         if os.path.exists("output_temp.xyz"):
             os.remove("output_temp.xyz")
+
+if config["final_relaxation"]:
+    print("Performing final relaxation...")
+
+    timestep_ = config["time_step_relaxation"]
+    if config["thermostat_relaxation"] == "Langevin":
+        dyn = Langevin(atoms,timestep=timestep_ * units.fs, temperature_K=config["relaxation_temperature"],friction=0.1)
+    elif config["thermostat_relaxation"] == "Verlet":
+        dyn = VelocityVerlet(atoms,timestep=timestep_*units.fs)
+    elif config["thermostat_relaxation"] == "NVTBerendsen":
+        dyn = NVTBerendsen(atoms, timestep_ * units.fs, temperature_K=config["relaxation_temperature"],taut=0.5*100000*units.fs)
+
+    i = 0
+    while i < config["relaxation_steps"]:
+        dyn.step()
+        dyn.atoms.write(output_file, append=True)
+        i = i + 1
+    return atoms

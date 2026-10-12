@@ -5,18 +5,22 @@ output_file : colision.xyz
 
 min_dist : 2
 offset : Angular #None, Radial, Angular
-thermostat : Langevin # Verlet #, NVTBerendsen
-temperature : 1000
-
-relaxation_steps : 500
+max_radial_offset : 1.0
+initial_temperature_1 : 1000 # K
+initial_temperature_2 : 1000 # K
+velocity_magnitude_1 : 0.0 # km/s
+velocity_magnitude_2 : 0.0 # km/s
 collision_steps : 1000
-
-time_step_relaxation : 1.0 # fs
 time_step_collision : 1.0 # fs
 
-calculator : MACE
+final_relaxation : False
+relaxation_steps : 500
+time_step_relaxation : 1.0 # fs
+thermostat_relaxation : Langevin # Verlet #, NVTBerendsen
+relaxation_temperature : 300 # K
 
 # MACE variables
+calculator : MACE
 mace_model_type : "EnergyDipoleMACE"
 mace_force_field_file : /home/yuca/workdir/mace/MACE_TiCH/tich_stagetwo.model
 

@@ -91,3 +91,65 @@ def offset_angular(velocidad_vector, rho, dist_min):
     vel = rho / (rho+dist_min) * norm_vel
     offset = perp_vec * np.random.uniform(0,vel)
     return velocidad_original + offset
+
+
+def offset_radial_fragment(posicion, rho):
+    posicion_original = np.array(posicion, dtype=float)
+    posiciones = posicion_original.copy()
+
+    rand_vec = np.random.normal(size=3)
+    rand_vec /= np.linalg.norm(rand_vec)
+    offset_magnitude = np.random.uniform(0, rho)
+
+
+    for i, pos in enumerate(posicion_original):
+        norm_pos = np.linalg.norm(pos)
+
+        if norm_pos == 0:
+            continue
+
+        pos_unit = pos / norm_pos
+
+        perp_vec = rand_vec - np.dot(pos_unit, rand_vec) * pos_unit
+        norm_perp = np.linalg.norm(perp_vec)
+
+        if norm_perp == 0:
+            continue
+
+        perp_vec /= norm_perp
+        offset = perp_vec * offset_magnitude
+        posiciones[i] = pos + offset
+
+    return posiciones
+
+def offset_angular_fragment(velocidad_vector, rho, dist_min):
+    velocidad_original = np.array(velocidad_vector, dtype=float)
+    velocidades = velocidad_original.copy()
+
+    rand_vec = np.random.normal(size=3)
+    rand_vec /= np.linalg.norm(rand_vec)
+
+    offset_magnitude = np.random.uniform(0, rho / (rho + dist_min))
+
+    for i, vel_original in enumerate(velocidad_original):
+        norm_vel = np.linalg.norm(vel_original)
+
+        if norm_vel == 0:
+            continue
+
+        vel_unit = vel_original / norm_vel
+ 
+        perp_vec = rand_vec - np.dot(rand_vec, vel_unit) * vel_unit
+        norm_perp = np.linalg.norm(perp_vec)
+
+        if norm_perp == 0:
+            continue
+
+        perp_vec /= norm_perp
+
+        vel = rho / (rho + dist_min) * norm_vel
+        offset = perp_vec * noffset_magnitude * vel
+        
+        velocidades[i] = vel_original + offset
+
+    return velocidades
