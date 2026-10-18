@@ -45,6 +45,8 @@ for i in range(1, config["cycles"]+1):
             # collision = relaxed + fragment
             collision = relaxed + fragment
             collision = RunCollision(collision,config,i)
+# Podríamos poner un selector de criterio de conectividad
+#            collision, accepted = RunCollision(collision,config,i)
             accepted = CheckConnectivity(collision,3.5)
             print(i,current_stoichiometry,rho,accepted)
             if accepted:

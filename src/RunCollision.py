@@ -15,6 +15,14 @@ from ase.md.nvtberendsen import NVTBerendsen
 
 from src.utils import CheckConnectivity, GetParticleDiameter
 
+def criterio(atoms,umbral=4):
+    distancias = atoms.get_distances(
+        a=len(atoms) - 1,
+        indices=np.arange(len(atoms) - 1),
+        mic=True
+    )
+    return bool(np.min(distancias) < umbral)
+
 def RunCollision(atoms,config,index):
     rho = GetParticleDiameter(atoms)
     if config["calculator"].upper() == "MACE":
@@ -46,5 +54,5 @@ def RunCollision(atoms,config,index):
             if max_dist > 3*rho: #float(config["dist_from_seed"]):
                 break
         i = i + 1
-
+#    accepted = criterio(dyn.atoms)
     return atoms
