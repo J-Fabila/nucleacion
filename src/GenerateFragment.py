@@ -1,7 +1,7 @@
 import numpy as np
 from ase import Atoms
 from ase.units import kB, _amu
-from src.utils import masses
+from src.utils import masses, MaxwellBoltzmannAverageSpeed
 from collections import Counter
 import random
 from ase.md.velocitydistribution import MaxwellBoltzmannDistribution
@@ -60,7 +60,7 @@ def GenerateFragment(inicial, config, rho):
             velocidad_magnitud = np.linalg.norm(particula.get_velocities())
         elif config["initialize_velocity"] == "AverageTemperature":
 #            velocidad_magnitud = 0.13610830385858072
-            velocidad_magnitud = np.sqrt(3 * kB * config["InitialTemperature"] / (masses[nuevo] * _amu))
+            velocidad_magnitud = MaxwellBoltzmannAverageSpeed(config["InitialTemperature"], nuevo, config["n_samples"])
         elif config["initialize_velocity"] == "Manual":
             velocidad_magnitud = config["InitialVelocity"]
 

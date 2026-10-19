@@ -1,5 +1,7 @@
 import numpy as np
 from ase.geometry import geometry
+from ase import Atoms
+from ase.md.velocitydistribution import MaxwellBoltzmannDistribution
 
 import re
 from collections import defaultdict
@@ -122,3 +124,13 @@ def MinimumDistance(atoms,umbral=4):
 
 def CheckConfig(config):
     pass
+
+def MaxwellBoltzmannAverageSpeed(temperature, atom_type, n_samples=10):
+    particula_ = Atoms(atom_type, positions=np.array([[0,0,0]]), masses=[masses[atom_type]])
+    velocidades=[]
+    suma=0
+    for i in range(n_samples):
+        MaxwellBoltzmannDistribution(particula_, temperature_K=temperature)
+        velocidad_magnitud = np.linalg.norm(particula_.get_velocities())
+        suma=suma+velocidad_magnitud
+    return suma/n_samples
