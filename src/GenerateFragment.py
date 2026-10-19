@@ -52,27 +52,20 @@ def GenerateFragment(inicial, config, rho):
         else:
             dist_min = config["dist_from_seed"]
 
-        """
-
         posicion = -(rho/2+dist_min) * direccion
-#        print("POS", posicion)
-# :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
         particula = Atoms(nuevo, positions=[posicion], masses=[masses[nuevo]])
-#        MaxwellBoltzmannDistribution(particula, temperature_K=tempe)
-#        velocidad_magnitud = np.linalg.norm(particula.get_velocities())
-        velocidad_magnitud = 0.13610830385858072
-# :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-#        print("VEL", velocidad_magnitud)
+        if config["initialize_velocity"] == "MaxwellBoltzmann":
+            MaxwellBoltzmannDistribution(particula, temperature_K=config["InitialTemperature"])
+            velocidad_magnitud = np.linalg.norm(particula.get_velocities())
+        elif config["initialize_velocity"] == "AverageTemperature":
+#            velocidad_magnitud = 0.13610830385858072
+            velocidad_magnitud = np.sqrt(3 * kB * config["InitialTemperature"] / (masses[nuevo] * _amu))
+        elif config["initialize_velocity"] == "Manual":
+            velocidad_magnitud = config["InitialVelocity"]
+
         velocidad_vector = direccion * velocidad_magnitud
 
-        """
-        posicion = -(rho/2+dist_min) * direccion
-#        print("POS", posicion)
-        particula = Atoms(nuevo, positions=[posicion], masses=[masses[nuevo]])
-        MaxwellBoltzmannDistribution(particula, temperature_K=tempe)
-        velocidad_magnitud = np.linalg.norm(particula.get_velocities())
-#        print("VEL", velocidad_magnitud)
-        velocidad_vector = direccion * velocidad_magnitud
         if config["offset"] == "None":
             particula.set_velocities([velocidad_vector])
         elif config["offset"].lower() == "radial":

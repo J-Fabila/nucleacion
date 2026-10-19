@@ -111,3 +111,14 @@ def parse_formula(formula):
         composition[element] += count
 
     return dict(composition)
+
+def MinimumDistance(atoms,umbral=4):
+    distancias = atoms.get_distances(
+        a=len(atoms) - 1,
+        indices=np.arange(len(atoms) - 1),
+        mic=True
+    )
+    return bool(np.min(distancias) < umbral)
+
+def CheckConfig(config):
+    pass

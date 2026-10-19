@@ -26,11 +26,11 @@ def RelaxGeometry(atoms,config,index):
     atoms.calc = calc
     timestep_ = config["time_step_relaxation"]
     if config["thermostat_relaxation"] == "Langevin":
-        dyn = Langevin(atoms,timestep=timestep_ * units.fs, temperature_K=config["temperature"],friction=0.1)
+        dyn = Langevin(atoms,timestep=timestep_ * units.fs, temperature_K=config["relaxation_temperature"],friction=0.1)
     elif config["thermostat_relaxation"] == "Verlet":
         dyn = VelocityVerlet(atoms,timestep=timestep_*units.fs)
     elif config["thermostat_relaxation"] == "NVTBerendsen":
-        dyn = NVTBerendsen(atoms, timestep_ * units.fs, temperature_K=config["temperature"], taut=0.5*100000*units.fs)
+        dyn = NVTBerendsen(atoms, timestep_ * units.fs, temperature_K=config["relaxation_temperature"], taut=0.5*100000*units.fs)
 
     if config["collisions_files"] is not None:
         output_file = config["collisions_files"]+"_relaxation_"+str(index)+".xyz"
@@ -40,13 +40,15 @@ def RelaxGeometry(atoms,config,index):
     i = 0
     while i < config["relaxation_steps"]:
         dyn.step()
-        dyn.atoms.write(output_file, append=True)
-        if i % 100 == 0:
-            max_dist = dyn.atoms.get_all_distances().max()
-            if max_dist > 3*rho: #float(config["dist_from_seed"]):
+        if i % config["relaxation_write_every"] == 0:
+            dyn.atoms.write(output_file, append=True)
+        if i % config["connectivity_check_every"] == 0:
+            if config["acceptance_criterion"] == "connectivity_check":
+                accepted = CheckConnectivity(atoms,umbral=config["connectivity_threshold"])
+            elif config["acceptance_criterion"] == "minimun_distance":
+                accepted = MinimumDistance(atoms,umbral=config["connectivity_threshold"])
+
+            if accepted == False:
                 break
-#            connectivity = CheckConnectivity(dyn.atoms, 3.5)
-#            if connectivity == False:
-#                break
         i = i + 1
-    return atoms
+    return atoms, accepted

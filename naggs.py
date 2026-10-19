@@ -32,9 +32,7 @@ for i in range(1, config["cycles"]+1):
     seed = seed_.copy()
     current_stoichiometry = parse_formula(str(seed.symbols))
     seed.translate(-seed.get_center_of_mass())
-    relaxed = RelaxGeometry(seed,config,i)
-    accepted = CheckConnectivity(relaxed,3.5)
-    # while accepted:
+    relaxed, accepted = RelaxGeometry(seed,config,i)
     if accepted:
         rho = GetParticleDiameter(relaxed) # antes estaba seed
         fragment = GenerateFragment(current_stoichiometry,config, rho)
@@ -42,12 +40,8 @@ for i in range(1, config["cycles"]+1):
             print(i,current_stoichiometry,rho,accepted,"break")
             break
         else:
-            # collision = relaxed + fragment
             collision = relaxed + fragment
-            collision = RunCollision(collision,config,i)
-# Podríamos poner un selector de criterio de conectividad
-#            collision, accepted = RunCollision(collision,config,i)
-            accepted = CheckConnectivity(collision,3.5)
+            collision, accepted = RunCollision(collision,config,i)
             print(i,current_stoichiometry,rho,accepted)
             if accepted:
                 seed_ = collision
