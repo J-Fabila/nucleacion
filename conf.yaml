@@ -2,15 +2,22 @@
 input_file : TiC.xyz
 collisions_files : colisiones # output files
 desired_stoichiometry : { #Ti14C16
-    "C": 13,
+    "C": 50,
     "Ti": 14}
 cycles : 3
 dist_from_seed : 5
 elements : ["C","Ti"]
 calculator : MACE
-offset : Angular #None, Radial, Angular
+offset : Angular #None, Radial, Angular, Random
+initialize_velocity : MaxwellBoltzmann, AverageTemperature, Manual #None, MaxwellBoltzmann, AverageTemperature
+InitialTemperature : 1000
+n_samples : 10 # for MaxwellBoltzmannAverageSpeed
+InitialVelocity : 0.13 #Units: Angstrom/fs
+acceptance_criterion : minimun_distance # connectivity_check
+connectivity_threshold : 3.5
+connectivity_check_every : 100
 # MD: Relaxation and collision
-thermostat : Langevin # Verlet #, NVTBerendsen
+thermostat_relaxation : Langevin # Verlet #, NVTBerendsen
 temperature : 1000
 
 relaxation_steps : 500
@@ -19,8 +26,11 @@ collision_steps : 1000
 time_step_relaxation : 2.0 # fs
 time_step_collision : 2.0 # fs
 
+relaxation_write_every : 100
+collision_write_every : 100
+
 # MACE variables
-mace_force_field_file: ./models/mace03_run-123.model
+mace_force_field_file : ./models/mace03_run-123.model
 
 # LAMMPS variables
 ip_definition : ip_definition.dat
